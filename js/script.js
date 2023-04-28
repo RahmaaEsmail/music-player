@@ -1,84 +1,84 @@
 // Reference
-const container = document.querySelector(".container");
-const playMusic = document.querySelector("#play-btn");
-const pauseMusic = document.querySelector("#pause-btn");
-const nextMusic = document.getElementById("next-btn");
-const prevMusic = document.getElementById("prev-btn");
-const audio = document.querySelector("#audio");
-const musicImg = document.querySelector(".music-img");
-const title = document.querySelector("#title");
-const progressContainer = document.querySelector(".progress-container");
-const progress = document.getElementById("progress");
+const containerEle = document.querySelector(".container");
+const playMusicBtn = document.querySelector("#play-btn");
+const pauseMusicBtn = document.querySelector("#pause-btn");
+const nextMusicBtn = document.getElementById("next-btn");
+const prevMusicBtn = document.getElementById("prev-btn");
+const audioEle = document.querySelector("#audio");
+const musicImgEle = document.querySelector(".music-img");
+const titleEle = document.querySelector("#title");
+const progressContainerEle = document.querySelector(".progress-container");
+const progressEle = document.getElementById("progress");
 const musicList = ['hey','summer','ukulele'];
 let songIndex = 2;
 
 
 const loadSong = function (songIndex) {
-    title.textContent = musicList[songIndex]
-    audio.src = `music/${musicList[songIndex]}.mp3`;
-    musicImg.src = `images/${musicList[songIndex]}.jpg`
+    titleEle.textContent = musicList[songIndex]
+    audioEle.src = `music/${musicList[songIndex]}.mp3`;
+    musicImgEle.src = `images/${musicList[songIndex]}.jpg`
 }
 loadSong(songIndex)
 
 // play song 
-const musicPlayer = function() {
-    container.classList.add("play")
-    playMusic.classList.add("hide")
-    pauseMusic.classList.remove("hide")
-    audio.play()
+const playMusic = function() {
+    containerEle.classList.add("play")
+    playMusicBtn.classList.add("hide")
+    pauseMusicBtn.classList.remove("hide")
+    audioEle.play()
 }
-musicPlayer()
+playMusic()
 
 // pause song
-const musicPause = function() {
-    container.classList.remove("play")
-    pauseMusic.classList.add("hide")
-    playMusic.classList.remove("hide")
-    audio.pause()
+const pauseMusic = function() {
+    containerEle.classList.remove("play")
+    pauseMusicBtn.classList.add("hide")
+    playMusicBtn.classList.remove("hide")
+    audioEle.pause()
 }
-musicPause()
+pauseMusic()
 
 // next song
-const nextSongFun = function() {
+const getNextSong = function() {
     songIndex++;
     if (songIndex > musicList.length - 1)
         songIndex = 0;
 
     loadSong(songIndex)
-    musicPlayer()
+    playMusic()
 }
 
 // prev song
-const prevSongFun = function() {
+const getPrevSong = function() {
     songIndex--;
     if (songIndex < 0) 
         songIndex = musicList.length - 1;
     
 
     loadSong(songIndex)
-    musicPlayer()
+    playMusic()
 }
 
 // update progress 
 const updateProgressBar = function(e) {
     const {duration , currentTime} = e.srcElement;
     const  progresPercent =( currentTime / duration ) * 100;
-    progress.style.width = `${progresPercent}px`
+    progressEle.style.width = `${progresPercent}px`
 }
 
 // set progress
 const setProgress = function (e) {
     const width = this.clientWidth;
     const clickX = e.offsetX;
-    const duration = audio.duration;
-    audio.currentTime = (clickX / width) * duration
+    const duration = audioEle.duration;
+    audioEle.currentTime = (clickX / width) * duration
 }
 
 // Events handlers
-playMusic.addEventListener("click",musicPlayer)
-pauseMusic.addEventListener("click",musicPause)
-audio.addEventListener('timeupdate',updateProgressBar)
-prevMusic.addEventListener('click', prevSongFun)
-nextMusic.addEventListener('click',nextSongFun)
-progressContainer.addEventListener('click',setProgress)
-audio.addEventListener('ended',nextSongFun)
+playMusicBtn.addEventListener("click",playMusic)
+pauseMusicBtn.addEventListener("click",pauseMusic)
+audioEle.addEventListener('timeupdate',updateProgressBar)
+prevMusicBtn.addEventListener('click', getPrevSong)
+nextMusicBtn.addEventListener('click',getNextSong)
+progressContainerEle.addEventListener('click',setProgress)
+audioEle.addEventListener('ended',getNextSong)
